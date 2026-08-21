@@ -1,19 +1,18 @@
 <?php
+
 defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
 class StudentMiddleware
 {
     public function handle(Closure $next)
     {
-        // Simple access condition: checks if the student session flag is set
-        if (!isset($_SESSION['student_access']) || $_SESSION['student_access'] !== true) {
-            $_SESSION['student_access'] = true; // simulate a logged-in student
+        if (isset($_SESSION['student_access']) && $_SESSION['student_access'] === true) {
+            return $next();
         }
 
-        if ($_SESSION['student_access'] === true) {
-            return $next(); // allowed -> continue to the controller
-        }
+        $_SESSION['middleware_message'] = 'Profile access denied. Please visit the Student Home first.';
 
-        redirect('student'); // NO -> send back to home page
+        header('Location: ' . site_url('student'));
+        exit;
     }
 }
