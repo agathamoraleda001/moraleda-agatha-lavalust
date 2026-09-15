@@ -182,6 +182,10 @@ class Session {
 
         ini_set('session.name', $this->config['cookie_name']);
 
+		if ($this->config['sess_driver'] === 'file' && !empty($this->config['sess_save_path'])) {
+			session_save_path($this->config['sess_save_path']);
+		}
+
         // Expiration
         $this->config['sess_expiration'] = (int)($this->config['sess_expiration'] ?? ini_get('session.gc_maxlifetime') ?: 7200);
         ini_set('session.gc_maxlifetime', $this->config['sess_expiration']);
