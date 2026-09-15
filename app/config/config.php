@@ -269,9 +269,9 @@ $config['session_hmac_secret']     = getenv('APP_KEY') ?: '';
 $config['cookie_prefix']           = '';
 $config['cookie_domain']           = '';
 $config['cookie_path']             = '/';
-$config['cookie_secure']           = FALSE;
+$config['cookie_secure']           = $is_https;
 $config['cookie_expiration']       = 86400;
-$config['cookie_httponly']         = FALSE;
+$config['cookie_httponly']         = TRUE;
 $config['cookie_samesite']         = 'Strict';
 
 /*
