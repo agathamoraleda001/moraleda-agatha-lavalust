@@ -1,609 +1,246 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title><?= $title ?></title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
     <style>
-
-        * {
-            box-sizing: border-box;
+        :root {
+            --green-950: #062d1f;
+            --green-900: #0c3d2e;
+            --green-700: #156c46;
+            --green-600: #1d8d5e;
+            --green-500: #2bb875;
+            --green-100: #e5f9ee;
+            --green-50: #f5fcf8;
+            --white: #ffffff;
+            --text: #173d2b;
+            --muted: #587266;
+            --line: #dfeee6;
+            --shadow: 0 22px 54px rgba(8, 47, 32, 0.08);
         }
+
+        * { box-sizing: border-box; }
 
         body {
             margin: 0;
-            font-family: 'Poppins', sans-serif;
-            background: #f4f8f5;
-            color: #354b3d;
-        }
-
-        /* MAIN LAYOUT */
-
-        .layout {
             min-height: 100vh;
-            display: flex;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(180deg, #f3fbf6 0%, #ffffff 42%);
+            color: var(--text);
         }
 
-        /* SIDEBAR */
-
-        .sidebar {
-            width: 240px;
-            background: #245c3a;
-            color: white;
-            padding: 35px 20px;
-            position: fixed;
-            left: 0;
+        .navbar {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 7%;
+            position: sticky;
             top: 0;
-            bottom: 0;
+            z-index: 10;
         }
 
-        .logo {
-            text-align: center;
-            font-size: 21px;
-            font-weight: 700;
-            margin-bottom: 45px;
+        .brand {
+            color: var(--green-950);
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.04em;
         }
 
-        .logo span {
-            color: #9ed5ae;
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
-        .menu-title {
-            font-size: 11px;
-            color: #b9d5c1;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin: 0 15px 12px;
-        }
-
-        .menu a {
-            display: block;
-            padding: 13px 15px;
-            margin-bottom: 8px;
-
-            color: #dcece1;
+        .nav-links a {
+            color: var(--muted);
             text-decoration: none;
-
-            font-size: 14px;
-            font-weight: 500;
-
-            border-radius: 9px;
-
-            transition: 0.2s ease;
-        }
-
-        .menu a:hover,
-        .menu a.active {
-            background: #3d8558;
-            color: white;
-        }
-
-        .sidebar-footer {
-            position: absolute;
-            bottom: 30px;
-            left: 20px;
-            right: 20px;
-
-            padding: 15px;
-
-            background: rgba(255,255,255,0.08);
-            border-radius: 10px;
-
-            text-align: center;
-
-            font-size: 12px;
-            color: #cce1d2;
-        }
-
-        /* CONTENT */
-
-        .content {
-            margin-left: 240px;
-            width: calc(100% - 240px);
-
-            padding: 35px 45px;
-        }
-
-        /* TOP BAR */
-
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            margin-bottom: 35px;
-        }
-
-        .page-title {
-            margin: 0;
-
-            font-size: 15px;
-            color: #708176;
-        }
-
-        .student-name {
-            font-size: 14px;
-            font-weight: 600;
-            color: #245c3a;
-        }
-
-        /* WELCOME CARD */
-
-        .welcome-card {
-            min-height: 330px;
-
-            background: linear-gradient(
-                135deg,
-                #ffffff 0%,
-                #edf7f0 100%
-            );
-
-            border: 1px solid #d8e8dc;
-
-            border-radius: 20px;
-
-            padding: 50px;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            overflow: hidden;
-
-            position: relative;
-
-            box-shadow:
-                0 12px 35px rgba(41, 84, 56, 0.08);
-        }
-
-        .welcome-text {
-            max-width: 600px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .welcome-label {
-            color: #4f9d69;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 700;
+            padding: 10px 14px;
+            border-radius: 999px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links .active {
+            background: var(--green-100);
+            color: var(--green-950);
+        }
+
+        .hero {
+            max-width: 1180px;
+            margin: 0 auto;
+            min-height: calc(100vh - 78px);
+            padding: 72px 24px;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            color: var(--green-600);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            margin-bottom: 16px;
         }
 
         h1 {
-            margin: 12px 0 15px;
-
-            font-size: 42px;
-
-            line-height: 1.2;
-
-            color: #245c3a;
-        }
-
-        .welcome-text p {
-            color: #687a6e;
-
-            font-size: 16px;
-
-            line-height: 1.7;
-
-            margin-bottom: 30px;
-        }
-
-        /* BUTTON */
-
-        .btn {
-            display: inline-block;
-
-            padding: 13px 25px;
-
-            background: #2e7d4f;
-
-            color: white;
-
-            text-decoration: none;
-
-            border-radius: 9px;
-
-            font-size: 14px;
-
-            font-weight: 600;
-
-            transition: 0.25s ease;
-
-            box-shadow: 0 6px 15px rgba(46, 125, 79, 0.20);
-        }
-
-        .btn:hover {
-            background: #245c3a;
-
-            transform: translateY(-3px);
-
-            box-shadow: 0 9px 20px rgba(46, 125, 79, 0.28);
-        }
-
-        /* DECORATIVE CIRCLE */
-
-        .welcome-decoration {
-            width: 220px;
-            height: 220px;
-
-            background: #d9edde;
-
-            border-radius: 50%;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-size: 90px;
-
-            margin-right: 30px;
-
-            position: relative;
-        }
-
-        .welcome-decoration::before {
-            content: "";
-
-            position: absolute;
-
-            width: 270px;
-            height: 270px;
-
-            border: 2px solid #c7e1cf;
-
-            border-radius: 50%;
-        }
-
-        /* INFO CARDS */
-
-        .cards {
-            display: grid;
-
-            grid-template-columns: repeat(3, 1fr);
-
-            gap: 20px;
-
-            margin-top: 25px;
-        }
-
-        .card {
-            background: white;
-
-            padding: 25px;
-
-            border-radius: 15px;
-
-            border: 1px solid #dce9df;
-
-            box-shadow: 0 7px 20px rgba(41, 84, 56, 0.06);
-        }
-
-        .card-icon {
-            width: 42px;
-            height: 42px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            background: #edf7f0;
-
-            border-radius: 9px;
-
-            font-size: 20px;
-
-            margin-bottom: 15px;
-        }
-
-        .card h3 {
-            margin: 0 0 7px;
-
-            font-size: 15px;
-
-            color: #245c3a;
-        }
-
-        .card p {
             margin: 0;
-
-            color: #77857c;
-
-            font-size: 13px;
-
-            line-height: 1.5;
+            font-size: clamp(52px, 6vw, 86px);
+            line-height: 0.94;
+            letter-spacing: -0.06em;
+            color: var(--green-950);
         }
 
-        /* MOBILE */
+        h1 span {
+            color: var(--green-600);
+        }
+
+        .description {
+            max-width: 520px;
+            margin-top: 22px;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 28px;
+            min-height: 50px;
+            padding: 0 24px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, var(--green-600), var(--green-700));
+            color: var(--white);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 800;
+            box-shadow: 0 12px 24px rgba(29, 141, 94, 0.25);
+        }
+
+        .visual-card {
+            position: relative;
+            min-height: 500px;
+            border-radius: 28px;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(13, 61, 44, 0.96), rgba(17, 86, 57, 0.9));
+            box-shadow: var(--shadow);
+        }
+
+        .visual-card::before,
+        .visual-card::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .visual-card::before {
+            width: 420px;
+            height: 420px;
+            right: -100px;
+            top: -110px;
+        }
+
+        .visual-card::after {
+            width: 260px;
+            height: 260px;
+            left: -70px;
+            bottom: -90px;
+        }
+
+        .circle {
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            background: linear-gradient(135deg, #86efac, #36c277);
+            border-radius: 50%;
+            top: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 30px rgba(134, 239, 172, 0.5);
+        }
+
+        .square {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.12);
+            right: 46px;
+            bottom: 46px;
+            transform: rotate(45deg);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .badge {
+            position: absolute;
+            left: 32px;
+            bottom: 32px;
+            padding: 10px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.04);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
 
         @media (max-width: 800px) {
-
-            .sidebar {
-                width: 190px;
-            }
-
-            .content {
-                margin-left: 190px;
-                width: calc(100% - 190px);
-
-                padding: 25px;
-            }
-
-            .welcome-card {
-                padding: 35px;
-            }
-
-            .welcome-decoration {
-                width: 150px;
-                height: 150px;
-
-                font-size: 60px;
-
-                margin-right: 0;
-            }
-
-            h1 {
-                font-size: 32px;
-            }
-
-            .cards {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 600px) {
-
-            .layout {
-                display: block;
-            }
-
-            .sidebar {
-                position: relative;
-
-                width: 100%;
-
-                padding: 20px;
-
-                height: auto;
-            }
-
-            .logo {
-                margin-bottom: 20px;
-            }
-
-            .menu {
-                display: flex;
-                justify-content: center;
-                gap: 5px;
-            }
-
-            .menu a {
-                margin: 0;
-            }
-
-            .menu-title,
-            .sidebar-footer {
-                display: none;
-            }
-
-            .content {
-                margin-left: 0;
-
-                width: 100%;
-
-                padding: 20px;
-            }
-
-            .welcome-card {
+            .navbar {
+                padding: 18px 20px;
                 flex-direction: column;
-
-                text-align: center;
-
-                padding: 35px 25px;
+                align-items: flex-start;
+                gap: 16px;
             }
 
-            .welcome-decoration {
-                order: -1;
-
-                width: 120px;
-                height: 120px;
-
-                font-size: 50px;
-
-                margin-bottom: 25px;
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 40px 20px 62px;
             }
 
-            .welcome-decoration::before {
-                width: 150px;
-                height: 150px;
-            }
-
-            h1 {
-                font-size: 28px;
+            .visual-card {
+                min-height: 360px;
             }
         }
-
     </style>
-
 </head>
-
-
 <body>
-
-
-<div class="layout">
-
-
-    <!-- SIDEBAR -->
-
-    <aside class="sidebar">
-
-        <div class="logo">
-            Student<span>Portal</span>
-        </div>
-
-
-        <div class="menu-title">
-            Navigation
-        </div>
-
-
-        <div class="menu">
-
-    <a class="active" href="<?= site_url('student') ?>">
-        🏠 &nbsp; Home
-    </a>
-
-    <a href="<?= site_url('student/profile') ?>">
-        👤 &nbsp; Student Profile
-    </a>
-
-    <a href="<?= site_url('users') ?>">
-        👥 &nbsp; Users
-    </a>
-
-</div>
-
-        <div class="sidebar-footer">
-            Student Information System
-        </div>
-
-    </aside>
-
-
-    <!-- MAIN CONTENT -->
-
-    <main class="content">
-
-
-        <!-- TOP BAR -->
-
-        <div class="topbar">
-
-            <div class="page-title">
-                Student Dashboard
-            </div>
-
-            <div class="student-name">
-                Agatha's Portal
-            </div>
-
-        </div>
-
-
-        <!-- WELCOME -->
-
-        <section class="welcome-card">
-
-
-            <div class="welcome-text">
-
-                <div class="welcome-label">
-                    Welcome to the Student Portal
-                </div>
-
-
-                <h1>
-                    Student Information Page
-                </h1>
-
-
-                <p>
-                    A simple LavaLust application demonstrating
-                    routing, controllers, views, and middleware.
-                    Access your student information and profile
-                    through the portal.
-                </p>
-
-
-                <a class="btn" href="<?= site_url('student/profile') ?>">
-                    View My Profile →
-                </a>
-
-            </div>
-
-
-            <div class="welcome-decoration">
-                👩‍🎓
-            </div>
-
-
-        </section>
-
-
-        <!-- INFORMATION CARDS -->
-
-        <div class="cards">
-
-
-            <div class="card">
-
-                <div class="card-icon">
-                    🎓
-                </div>
-
-                <h3>
-                    Student Profile
-                </h3>
-
-                <p>
-                    View your personal and academic information.
-                </p>
-
-            </div>
-
-
-            <div class="card">
-
-                <div class="card-icon">
-                    📚
-                </div>
-
-                <h3>
-                    Academic Information
-                </h3>
-
-                <p>
-                    Access your course, year level, and section details.
-                </p>
-
-            </div>
-
-
-            <div class="card">
-
-                <div class="card-icon">
-                    🔒
-                </div>
-
-                <h3>
-                    Secure Access
-                </h3>
-
-                <p>
-                    Your student information is displayed through the
-                    application portal.
-                </p>
-
-            </div>
-
-
-        </div>
-
-
-    </main>
-
-
-</div>
-
-
+<nav class="navbar">
+    <div class="brand">Student Portal</div>
+
+    <div class="nav-links">
+        <a href="<?= site_url('student') ?>" class="active">Home</a>
+        <a href="<?= site_url('student/profile') ?>">Student Profile</a>
+        <a href="<?= site_url('users') ?>">Users</a>
+    </div>
+</nav>
+
+<main class="hero">
+    <div>
+        <div class="eyebrow">Student information</div>
+        <h1>Welcome to your <span>student portal</span>.</h1>
+        <p class="description">Your academic dashboard is ready. Review your profile and keep track of your student details in one clean, modern space.</p>
+        <a class="button" href="<?= site_url('student/profile') ?>">View My Profile</a>
+    </div>
+
+    <div class="visual-card">
+        <div class="circle"></div>
+        <div class="square"></div>
+        <div class="badge">Student hub</div>
+    </div>
+</main>
 </body>
-
 </html>

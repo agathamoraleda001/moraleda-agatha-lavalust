@@ -1,9 +1,20 @@
+<?php
+$products = $products ?? [];
+$totalProducts = count($products);
+$availableStock = 0;
+$inventoryValue = 0.0;
+
+foreach ($products as $product) {
+    $availableStock += (int) ($product['quantity'] ?? 0);
+    $inventoryValue += ((float) ($product['price'] ?? 0)) * (int) ($product['quantity'] ?? 0);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Directory</title>
+    <title>Product Directory</title>
     <style>
         :root {
             --green-950: #062d1f;
@@ -17,9 +28,9 @@
             --text: #173d2b;
             --muted: #587266;
             --line: #dfeee6;
+            --shadow: 0 22px 54px rgba(8, 47, 32, 0.08);
             --danger: #b42318;
             --danger-bg: #fff1f1;
-            --shadow: 0 22px 54px rgba(8, 47, 32, 0.08);
         }
 
         * { box-sizing: border-box; }
@@ -75,6 +86,11 @@
             color: var(--green-950);
         }
 
+        .nav-links .logout {
+            background: var(--danger-bg);
+            color: var(--danger);
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -105,6 +121,10 @@
             color: var(--green-950);
         }
 
+        h1 span {
+            color: var(--green-600);
+        }
+
         .add-button {
             display: inline-flex;
             align-items: center;
@@ -119,6 +139,37 @@
             font-size: 14px;
             font-weight: 800;
             box-shadow: 0 12px 24px rgba(29, 141, 94, 0.25);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(180px, 1fr));
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            padding: 22px 20px;
+        }
+
+        .stat-card small {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .stat-card strong {
+            font-size: 28px;
+            letter-spacing: -0.05em;
+            color: var(--green-950);
         }
 
         .table-wrapper {
@@ -159,6 +210,11 @@
 
         tbody tr:hover {
             background: var(--green-50);
+        }
+
+        .product-name {
+            color: var(--text);
+            font-weight: 800;
         }
 
         .id {
@@ -205,29 +261,47 @@
                 flex-direction: column;
                 align-items: flex-start;
             }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
-
 <body>
 <nav class="navbar">
-    <div class="brand">User Portal</div>
+    <div class="brand">Inventory Studio</div>
 
     <div class="nav-links">
-        <a href="<?= site_url('student') ?>">Home</a>
-        <a href="<?= site_url('student/profile') ?>">Student Profile</a>
-        <a href="<?= site_url('users') ?>" class="active">Users</a>
+        <a href="<?= site_url('users'); ?>">Users</a>
+        <a href="<?= site_url('products'); ?>" class="active">Products</a>
+        <a href="<?= site_url('logout'); ?>" class="logout">Logout</a>
     </div>
 </nav>
 
 <main class="container">
     <div class="topbar">
         <div>
-            <div class="eyebrow">Database records</div>
-            <h1>User Directory</h1>
+            <div class="eyebrow">Product management</div>
+            <h1>Product <span>Directory</span></h1>
         </div>
 
-        <a class="add-button" href="<?= site_url('users/create') ?>">+ Add User</a>
+        <a class="add-button" href="<?= site_url('products/create'); ?>">+ Add Product</a>
+    </div>
+
+    <div class="stats">
+        <div class="stat-card">
+            <small>Total Products</small>
+            <strong><?= $totalProducts; ?></strong>
+        </div>
+        <div class="stat-card">
+            <small>Available Stock</small>
+            <strong><?= $availableStock; ?></strong>
+        </div>
+        <div class="stat-card">
+            <small>Inventory Value</small>
+            <strong>₱<?= number_format($inventoryValue, 2); ?></strong>
+        </div>
     </div>
 
     <div class="table-wrapper">
@@ -235,25 +309,29 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Username</th>
+                    <th>Product Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
                     <th>Action</th>
                 </tr>
             </thead>
 
             <tbody>
-                <?php foreach ($users as $user): ?>
+                <?php foreach ($products as $product): ?>
                     <tr>
-                        <td class="id"><?= $user['id']; ?></td>
-                        <td><?= $user['firstname']; ?></td>
-                        <td><?= $user['lastname']; ?></td>
-                        <td><?= $user['email']; ?></td>
-                        <td><?= $user['username']; ?></td>
+                        <td class="id"><?= htmlspecialchars($product['id']); ?></td>
+                        <td class="product-name"><?= htmlspecialchars($product['product_name']); ?></td>
+                        <td><?= htmlspecialchars($product['description']); ?></td>
+                        <td>₱<?= number_format((float) $product['price'], 2); ?></td>
+                        <td><?= htmlspecialchars($product['quantity']); ?></td>
                         <td class="actions">
-                            <a class="edit" href="<?= site_url('users/edit/' . $user['id']) ?>">Edit</a>
-                            <a class="delete" href="<?= site_url('users/delete/' . $user['id']) ?>" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+                            <a class="edit" href="<?= site_url('products/edit/' . $product['id']); ?>">Edit</a>
+                            <a
+                                class="delete"
+                                href="<?= site_url('products/delete/' . $product['id']); ?>"
+                                onclick="return confirm('Are you sure you want to delete this product?');"
+                            >Delete</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -262,5 +340,4 @@
     </div>
 </main>
 </body>
-</html>
 </html>
