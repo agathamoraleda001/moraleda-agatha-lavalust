@@ -79,7 +79,11 @@ $config['environment'] = getenv('APP_ENV') ?: 'development';
 | WARNING: You MUST set this value!
 |
 */
-$config['base_url'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http')
+$forwarded_protocol = $_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '';
+$is_https = $forwarded_protocol === 'https'
+    || (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on');
+
+$config['base_url'] = ($is_https ? 'https' : 'http')
                     . '://' . $_SERVER['HTTP_HOST']
                     . (($_SERVER['HTTP_HOST'] === 'localhost') ? '/LavaLust/' : '/');
 
