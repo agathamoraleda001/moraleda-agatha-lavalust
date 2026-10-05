@@ -107,3 +107,4 @@ $router->put('/api/products/{id}', 'ProductController::api_update');
 $router->patch('/api/products/{id}', 'ProductController::api_update');
 
 $router->delete('/api/products/{id}', 'ProductController::api_delete');
+$router->get('/', 'AuthController::login');
