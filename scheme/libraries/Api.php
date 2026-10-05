@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 /**
  * ------------------------------------------------------------------
@@ -475,22 +475,35 @@ class Api
      */
     public function get_bearer_token()
     {
-        $header = $_SERVER['HTTP_AUTHORIZATION'] ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '';
+        $header = '';
 
-        if (!$header && function_exists('apache_request_headers')) {
-            $headers = apache_request_headers();
-            $header = $headers['Authorization'] ?? '';
+        if (function_exists('getallheaders')) {
+            $headers = getallheaders();
+
+            foreach ($headers as $key => $value) {
+                if (strtolower($key) === 'authorization') {
+                    $header = $value;
+                    break;
+                }
+            }
         }
 
-        return preg_match('/Bearer\s(\S+)/i', $header, $matches) ? $matches[1] : null;
+        if (!$header) {
+            $header = $_SERVER['HTTP_AUTHORIZATION']
+                ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION']
+                ?? '';
+        }
+
+        if (!$header) {
+            return null;
+        }
+
+        if (preg_match('/Bearer\s+(.+)/i', $header, $matches)) {
+            return trim($matches[1]);
+        }
+
+        return null;
     }
-
-
-    /**
-     * require_jwt
-     *
-     * @return void
-     */
     public function require_jwt()
     {
         $token = $this->get_bearer_token();

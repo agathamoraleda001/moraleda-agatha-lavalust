@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
 
@@ -78,3 +78,32 @@ $router->match('/products/edit/{id}', 'ProductController::edit', ['GET', 'POST']
 
 $router->get('/products/delete/{id}', 'ProductController::delete')
 	->middleware('AuthMiddleware');
+
+
+// Migration Routes
+
+$router->get('/create-migration/{migration_class}', 'MigrationController::create_migration');
+
+$router->get('/migrate', 'MigrationController::migrate');
+
+$router->get('/rollback', 'MigrationController::rollback');
+
+$router->get('/rollback-all', 'MigrationController::rollback_all');
+
+$router->get('/refresh', 'MigrationController::refresh');
+
+$router->get('/status', 'MigrationController::status');
+
+// Product API Routes
+
+$router->post('/api/login', 'AuthController::api_login');
+
+$router->get('/api/products', 'ProductController::api_index');
+
+$router->post('/api/products', 'ProductController::api_create');
+
+$router->put('/api/products/{id}', 'ProductController::api_update');
+
+$router->patch('/api/products/{id}', 'ProductController::api_update');
+
+$router->delete('/api/products/{id}', 'ProductController::api_delete');

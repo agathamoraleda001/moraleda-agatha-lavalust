@@ -1,10 +1,9 @@
-<?php
+﻿<?php
 defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
 class ProductModel extends Model
 {
     protected $table = 'products';
-
     protected $primary_key = 'id';
 
     public function get_products()
@@ -19,6 +18,10 @@ class ProductModel extends Model
 
     public function create_product($data)
     {
+        if (!isset($data['created_at'])) {
+            $data['created_at'] = date('Y-m-d H:i:s');
+        }
+
         return $this->insert($data);
     }
 
