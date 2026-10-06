@@ -2,24 +2,68 @@
 
 defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
-$config['api'] = [
-    'jwt_secret' => getenv('JWT_SECRET') ?: '',
+/*
+|--------------------------------------------------------------------------
+| API Helper
+|--------------------------------------------------------------------------
+*/
+$config['api_helper_enabled'] = TRUE;
 
-    'jwt_algorithm' => 'HS256',
+/*
+|--------------------------------------------------------------------------
+| Payload Token Expiration
+|--------------------------------------------------------------------------
+*/
+$config['payload_token_expiration'] = 900;
 
-    'jwt_issuer' => 'lavalust',
+/*
+|--------------------------------------------------------------------------
+| Refresh Token Expiration
+|--------------------------------------------------------------------------
+*/
+$config['refresh_token_expiration'] = 604800;
 
-    'jwt_audience' => 'lavalust-api',
+/*
+|--------------------------------------------------------------------------
+| JWT Secret
+|--------------------------------------------------------------------------
+*/
+$config['jwt_secret'] = getenv('JWT_SECRET') ?: '';
 
-    'access_token_expiration' => 3600,
+/*
+|--------------------------------------------------------------------------
+| Refresh Token Key
+|--------------------------------------------------------------------------
+*/
+$config['refresh_token_key'] = getenv('APP_KEY') ?: '';
 
-    'refresh_token_expiration' => 604800,
+/*
+|--------------------------------------------------------------------------
+| JWT Claims
+|--------------------------------------------------------------------------
+*/
+$config['jwt_issuer'] = 'lavalust';
+$config['jwt_audience'] = 'lavalust-api';
 
-    'allow_origin' => '*',
+/*
+|--------------------------------------------------------------------------
+| CORS
+|--------------------------------------------------------------------------
+*/
+$config['allow_origin'] = 'https://frontend-lavalust.onrender.com';
 
-    'allow_methods' => 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+/*
+|--------------------------------------------------------------------------
+| Refresh Token Table
+|--------------------------------------------------------------------------
+*/
+$config['refresh_token_table'] = 'refresh_tokens';
 
-    'allow_headers' => 'Content-Type, Authorization, Accept, Origin, X-Requested-With',
-
-    'allow_credentials' => false
-];
+/*
+|--------------------------------------------------------------------------
+| Rate Limiting
+|--------------------------------------------------------------------------
+*/
+$config['rate_limit_enabled'] = TRUE;
+$config['rate_limit_requests'] = 60;
+$config['rate_limit_seconds'] = 60;
