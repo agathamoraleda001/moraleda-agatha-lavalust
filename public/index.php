@@ -1,4 +1,14 @@
 <?php
+// CORS
+header('Access-Control-Allow-Origin: https://frontend-lavalust.onrender.com');
+header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, Accept, Origin, X-Requested-With');
+header('Access-Control-Allow-Credentials: false');
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(204);
+    exit;
+}
 define('PREVENT_DIRECT_ACCESS', TRUE);
 /**
  * ------------------------------------------------------------------
